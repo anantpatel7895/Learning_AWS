@@ -154,7 +154,6 @@ From **most specific to least specific**:
 Longest Prefix Match Wins
 ```
 
-
 AWS always selects the **route with the most specific CIDR match**.
 
 ---

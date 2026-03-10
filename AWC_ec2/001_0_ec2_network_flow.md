@@ -1,6 +1,5 @@
-# Learning_AWS
+# EC2 Network Flow
 
-## AWS Inbound Network traffic Flow
 ```scss
 Your Laptop
    ↓
@@ -24,5 +23,3 @@ SSH daemon
    ↓
 Application (SSH / Nginx / App)
 ```
-
-so here subnet route table dont come into picture in inbound traffic

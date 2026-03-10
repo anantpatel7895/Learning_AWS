@@ -12,7 +12,6 @@ Example:
 10.0.0.0/16
 ```
 
-
 Here:
 
 - `10.0.0.0` → Network address  

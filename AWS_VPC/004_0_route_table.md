@@ -17,6 +17,5 @@ A route table contains a set of rules, called routes, that are used to determine
 - Each VPC can have multiple Route Table along with Main Route Table.
 - if a subnet is not explicitly associated(linked) with any route table, it will use the **main route table**.
 - A subnet can be associated(linked) with **only one route table at a time**, but one route table can be associated(linked) with **multiple subnets**.
-- A subnet cannot have multiple route tables.
-- 
+
 
