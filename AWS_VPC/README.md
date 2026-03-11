@@ -5,7 +5,7 @@
 - In one region there can be multiple VPC.
 
 ### VPC-CIDR
-**CIDR** is a method used to represent **IP address ranges**
+**Classless Inter-Domain routing(CIDR)** is a method used to represent **IP address ranges**
 
 It is written in the format:
 ```scss
@@ -31,7 +31,8 @@ Network bits | Host bits
 
 ## 2. Subnet
 
-- Subnet is associated with **exactly one route table**.
+- Subnet is associated with **Exactly one Route Table**.
+- Subnet is associated with **Exactly one Network ACLs**.
 - Subnet reside entirely within **one Availability Zone**.
 
 ### Public vs Private Subnet
@@ -70,10 +71,10 @@ Subnet CIDR ⊂ VPC CIDR
 ```scss
 10.0.0.0/16   (VPC CIDR)
 
-├── 10.0.1.0/24   Public Subnet
-├── 10.0.2.0/24   Private Subnet
-├── 10.0.3.0/24   Database Subnet
-└── 10.0.4.0/24   Cache Subnet
+├── 10.0.1.0/24   Public Subnet-CIDR
+├── 10.0.2.0/24   Private Subnet-CIDR
+├── 10.0.3.0/24   Database Subnet-CIDR
+└── 10.0.4.0/24   Cache Subnet-CIDR
 ```
 
 ---
@@ -92,9 +93,9 @@ Route table controls how traffic leaves or enters the subnets associated with it
 - a single route table can be assiciated(linked) with multiple subnet. 
 
 > Every route table in Amazon VPC automatically contains:
->  10.0.0.0/16 → local (CIDR → local)
+>  10.0.0.0/16 → local (VPC CIDR → local)
 
-## Route Table Important Concept
+## 3.1 Route Table Important Concept
 Route tables mainly decide:
 ```scss
 Where traffic goes
@@ -105,11 +106,45 @@ Not:
 Who can reach you
 ```
 
-> Route tables mainly control where packets go when leaving a subnet, while inbound internet traffic reaches an EC2 instance through public-to-private IP mapping and internal VPC routing, with route tables only affecting the response path.
+> Route tables mainly control where packets go when leaving a subnet, while inbound internet traffic reaches an EC2 instance through public-to-private IP mapping and internal VPC routing, with route tables only affecting the response path. because Every route table in Amazon VPC automatically contains: 10.0.0.0/16 → local (**VPC-CIDR** → local)
 
 Access control is handled by:
 - Security Groups
 - Network ACLs
+
+### 3.2 the key concepts for route tables:
+
+**Main route table**—The route table that automatically comes with your VPC. It controls the routing for all subnets that are not explicitly associated with any other route table.
+
+**Custom route table**—A route table that you create for your VPC.
+
+**Destination**—The range of IP addresses where you want traffic to go (destination CIDR). For example, an external corporate network with the CIDR 172.16.0.0/12.
+
+**Target**—The gateway, network interface, or connection through which to send the destination traffic; for example, an internet gateway.
+
+**Local route**—A default route for communication within the VPC. If the VPC has both IPv4 and IPV6 addresses, there is a local route for IPv4 and a local route for IPv6.
+
+**Route table association**—The association between a route table and a **subnet**, **internet gateway**, or **virtual private gateway**.
+
+**Subnet route table**—A route table that's associated with a subnet.
+
+**Propagation**—If you've attached a virtual private gateway to your VPC and enable route propagation, we automatically add routes for your VPN connection to your subnet route tables. This means that you don't need to manually add or remove VPN routes. For more information, see Site-to-Site VPN routing options in the Site-to-Site VPN User Guide.
+
+**Gateway route table**—A route table that's associated with an internet gateway or virtual private gateway.
+
+**Edge association**—A route table that you use to route inbound VPC traffic to an appliance. You associate a route table with the internet gateway or virtual private gateway, and specify the network interface of your appliance as the target for VPC traffic.
+
+**Transit gateway route table**—A route table that's associated with a transit gateway. For more information, see Transit gateway route tables in Amazon VPC Transit Gateways.
+
+**Local gateway route table**—A route table that's associated with an Outposts local gateway. For more information, see Local gateways in the AWS Outposts User Guide.
+
+
+### 3.3 Route table-Route fields
+| Destination             | Target   | Status | Propagated | Route Origin
+| ------------------------| -------- | ------ | ---------- |--------------------
+| 12.32.0.0/16 (VPC-CIDR) | local    | Active | No         | Create Route Table
+| 0.0.0.0/0               | igw-xxxx | Active | No         | Create Route
+
 
 ---
 
@@ -117,7 +152,7 @@ Access control is handled by:
 
 1. internet gatway created as seperate component
 2. after creation it is attached to the VPC
-3. then it can be added to the route table.
+3. then it can be added to the routes of any route table of that vpc.
 
 ## The Internet Gateway performs two key functions:
 1. Connectivity between the VPC and the internet
@@ -259,7 +294,7 @@ Rule #	Action
     - License activation for Windows instances
     - Amazon Time Sync Service
     - Reserved IP addresses used by the default VPC router
-    
+
 
 ### 6.3 Security Group vs Network ACL
 
