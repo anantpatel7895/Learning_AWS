@@ -181,7 +181,7 @@ such as:
 
 ### Security Group Characteristics
 
-#### Stateful firewall
+#### 1. Stateful firewall
 
 This means if **inbound traffic** is allowed, the **response traffic** is automatically allowed.
 
@@ -192,7 +192,7 @@ EC2 → Client (HTTP response)
 ```
 > You do not need an outbound rule for the response.
 
-#### Allow rules only
+#### 2. Allow rules only
 
 Security groups cannot deny traffic.
 
@@ -200,7 +200,7 @@ They only contain allow rules.
 
 > If traffic is not allowed → it is automatically blocked.
 
-#### Instance-level security
+#### 3. Instance-level security
 Security groups protect individual AWS resources, unlike Network ACLs, which protect subnets.
 
 ### the components of inbound and outbound security group rules:
@@ -246,7 +246,7 @@ So:
 
 ### 6.2 Important Characteristics
 
-#### Stateless
+#### 1. Stateless
 
 > Network ACL is stateless.
 
@@ -260,7 +260,7 @@ Server → Client (ephemeral port)
 ```
 > Both directions must be allowed.
 
-### Supports Allow and Deny Rules
+### 2.  Allow and Deny Rules
 
 Unlike security groups:
 ```scss
@@ -272,7 +272,7 @@ Example:
 Block malicious IP
 Rule Processing Order
 ```
-#### Rules are processed in ascending order.
+#### 3. Rules are processed in ascending order.
 
 Example:
 ```scss
